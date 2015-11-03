@@ -3,7 +3,6 @@ var util = require('./lib/utility');
 var partials = require('express-partials');
 var bodyParser = require('body-parser');
 
-
 var db = require('./app/config');
 var Users = require('./app/collections/users');
 var User = require('./app/models/user');
@@ -78,7 +77,42 @@ function(req, res) {
 // Write your authentication routes here
 /************************************************************/
 
+app.get('/login', function(req, res) {
+  res.render('login');
+});
 
+app.post('/login', function(req, res) {
+  console.log(req.body);
+  new User({ 
+    username: req.body.username, 
+    password: req.body.password 
+  }).fetch().then(function(user) {
+    if (!user) {
+      res.redirect('/signup');
+    } else {
+      console.log(user);
+      res.redirect('/login');
+    }
+  });
+});
+
+app.get('/signup', function(req, res) {
+  res.render('signup');
+});
+
+app.post('/signup', function(req, res) {
+  console.log(req.body.username);
+  
+  //succesful creation of new user row for User table
+  var user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
+  user.save().then(function () {
+    return res.redirect('/');
+  });
+  
+});
 
 /************************************************************/
 // Handle the wildcard route last - if all other routes fail
@@ -87,14 +121,16 @@ function(req, res) {
 /************************************************************/
 
 app.get('/*', function(req, res) {
+  console.log(req.params);
   new Link({ code: req.params[0] }).fetch().then(function(link) {
     if (!link) {
       res.redirect('/');
     } else {
+      //a pattern for retrieving table row??
       var click = new Click({
         link_id: link.get('id')
       });
-
+      //a pattern for saving a new table row??
       click.save().then(function() {
         db.knex('urls')
           .where('code', '=', link.get('code'))

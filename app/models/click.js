@@ -10,3 +10,17 @@ var Click = db.Model.extend({
 });
 
 module.exports = Click;
+
+/*
+db.knex.schema.hasTable('clicks').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('clicks', function (click) {
+      click.increments('id').primary();
+      click.integer('link_id');
+      click.timestamps();
+    }).then(function (table) {
+      console.log('Created Table', table);
+    });
+  }
+});
+*/
