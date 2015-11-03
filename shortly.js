@@ -12,6 +12,11 @@ var Click = require('./app/models/click');
 
 var app = express();
 
+/*
+app.use(express.cookieParser());
+app.use(express.session({secret: '1234567890QWERTY'}));
+*/
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(partials());
@@ -77,6 +82,11 @@ function(req, res) {
 // Write your authentication routes here
 /************************************************************/
 
+app.get('/logout', function(req, res) {
+  //todo: more logic here to stop session 
+  res.render('login');
+});
+
 app.get('/login', function(req, res) {
   res.render('login');
 });
@@ -88,10 +98,11 @@ app.post('/login', function(req, res) {
     password: req.body.password 
   }).fetch().then(function(user) {
     if (!user) {
-      res.redirect('/signup');
+      res.redirect('/login');
     } else {
       console.log(user);
-      res.redirect('/login');
+      //req.session.loggedIn = true;
+      res.redirect('/');
     }
   });
 });
