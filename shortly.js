@@ -14,6 +14,9 @@ var Click = require('./app/models/click');
 
 var app = express();
 
+var hour = 3600000;
+var minute = 60000;
+var interval = minute;
 
 app.use(cookieParser()); //**
 app.use(session({secret: '1234567890QWERTY'}));
@@ -32,6 +35,8 @@ app.get('/',
 function(req, res) {
   console.log(req.session.loggedIn, '*********');
   if (req.session.loggedIn) {
+    //req.session.cookie.expires = new Date(Date.now() + interval);
+    //console.log(req.session.loggedIn, req.session.cookie._expires);
     res.render('index');
   } else {
     res.redirect('login');
@@ -119,9 +124,13 @@ app.post('/login', function(req, res) {
     if (!user) {
       res.redirect('/login');
     } else {
-      //console.log(user);
+
+      req.session.cookie.expires = new Date(Date.now() + interval);
+      req.session.cookie.maxAge = interval;
+
       req.session.loggedIn = true;
-      console.log(user, req.session.loggedIn);
+      
+      console.log(user, req.session.loggedIn, req.session.cookie._expires);
       res.redirect('/');
     }
   });
