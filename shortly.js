@@ -16,7 +16,7 @@ var app = express();
 
 var hour = 3600000;
 var minute = 60000;
-var interval = minute;
+var interval = hour;
 
 app.use(cookieParser()); //**
 app.use(session({secret: '1234567890QWERTY'}));
@@ -130,7 +130,7 @@ app.post('/login', function(req, res) {
 
       req.session.loggedIn = true;
       
-      console.log(user, req.session.loggedIn, req.session.cookie._expires);
+      console.log(user.attributes.username, req.session.loggedIn, req.session.cookie.expires);
       res.redirect('/');
     }
   });
