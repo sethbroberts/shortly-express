@@ -68,7 +68,7 @@ describe('', function() {
     beforeEach(function(done){      // create a user that we can then log-in with
       new User({
           'username': 'Phillip',
-          'password': 'Phillip'
+          'password': '$2a$10$A/V85mLAJYR0f0HXjF1xqOhh2uQRNs6ZmzUGA4Rqu.67YyR8B0sUW'
       }).save().then(function(){
         var options = {
           'method': 'POST',
@@ -295,7 +295,7 @@ describe('', function() {
     beforeEach(function(done){
       new User({
           'username': 'Phillip',
-          'password': 'Phillip'
+          'password': '$2a$10$A/V85mLAJYR0f0HXjF1xqOhh2uQRNs6ZmzUGA4Rqu.67YyR8B0sUW'
       }).save().then(function(){
         done()
       });
